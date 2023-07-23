@@ -1,0 +1,4 @@
+starlette==0.30.0
+uvicorn==0.23.1
+auto-gptq==0.3.0
+guidance==0.0.64
