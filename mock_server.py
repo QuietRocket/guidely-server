@@ -1,7 +1,7 @@
 # Configuring guidance
 import guidance
 
-guidance.llm = guidance.llms.Mock()
+guidance.llms.Mock.end_of_text = lambda x: "<|endoftext|>"
 
 # Text diffing function
 import difflib
@@ -33,9 +33,15 @@ async def llm(request: Request):
     reqProgram = body["program"]
     reqVariables = body["variables"]
 
+    llmParams = []
+    if "llm" in reqVariables:
+        llmParams = reqVariables["llm"]
+        del reqVariables["llm"]
+
     async def event_stream():
         previous = ""
-        program = guidance(reqProgram)
+
+        program = guidance(reqProgram, llm=guidance.llms.Mock(llmParams))
         async for p in program(
             stream=True, async_mode=True, silent=True, **reqVariables
         ):
