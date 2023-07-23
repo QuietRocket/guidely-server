@@ -17,6 +17,7 @@ model = AutoGPTQForCausalLM.from_quantized(
     trust_remote_code=True,
     device="cuda:0",
     quantize_config=None,
+    use_triton=use_triton,
 )
 
 # Configuring guidance
